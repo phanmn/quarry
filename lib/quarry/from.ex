@@ -5,7 +5,7 @@ defmodule Quarry.From do
   alias Quarry.QueryStruct
 
   def build({schema, errors}, bind_prefix \\ nil) do
-    raw_binding = schema |> Module.split() |> List.last() |> String.downcase() |> String.to_atom()
+    raw_binding = schema |> Module.split() |> List.last() |> Macro.underscore() |> String.to_atom()
 
     binding =
       if is_nil(bind_prefix),
