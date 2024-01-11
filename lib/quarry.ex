@@ -14,7 +14,7 @@ defmodule Quarry do
   alias Quarry.{From, Filter, Load, Sort}
 
   @type operation :: :lt | :gt | :lte | :gte | :starts_with | :ends_with
-  @type filter_param :: String.t() | number
+  @type filter_param :: String.t() | Date.t() | DateTime.t() | list(any()) | number()
   @type tuple_filter_param :: {operation(), filter_param()}
   @type filter :: %{optional(atom()) => filter_param() | tuple_filter_param()}
   @type load :: atom() | [atom() | keyword(load())]

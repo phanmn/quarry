@@ -4,7 +4,7 @@ defmodule Quarry.Filter do
 
   alias Quarry.{Join, From}
 
-  @type filter :: %{optional(atom()) => String.t() | number() | filter()}
+  @type filter :: %{optional(atom()) => String.t() | Date.t() | DateTime.t() | list(any()) | number() | filter()}
 
   @spec build({Ecto.Query.t(), [Quarry.error()]}, Quarry.filter(), [atom()]) ::
           {Ecto.Query.t(), [Quarry.error()]}
