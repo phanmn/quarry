@@ -44,7 +44,7 @@ defmodule Quarry.Filter do
     }
   end
 
-  defp filter_field({field_name, child_filter}, acc, state) when is_map(child_filter) do
+  defp filter_field({field_name, child_filter}, acc, state) when is_map(child_filter) and is_struct(child_filter) == false do
     child_schema = state[:schema].__schema__(:association, field_name).related
 
     state =
