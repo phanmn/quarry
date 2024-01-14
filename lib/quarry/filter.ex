@@ -4,7 +4,7 @@ defmodule Quarry.Filter do
 
   alias Quarry.{Join, From}
 
-  @type filter :: %{optional(atom()) => String.t() | boolean() | Date.t() | DateTime.t() | list(any()) | number() | filter()} | keyword(any())
+  @type filter :: %{optional(atom()) => nil | String.t() | boolean() | Date.t() | DateTime.t() | list(any()) | number() | filter()} | keyword(any())
 
   @spec build({Ecto.Query.t(), [Quarry.error()]}, Quarry.filter(), [atom()]) ::
           {Ecto.Query.t(), [Quarry.error()]}
@@ -70,6 +70,18 @@ defmodule Quarry.Filter do
     |> Join.join_dependencies(state[:binding], state[:path])
     |> filter_by_operation(field_name, operation, value)
     |> then(&{&1, errors})
+  end
+
+  defp filter_by_operation({query, join_binding}, field_name, :neq, nil) do
+    Ecto.Query.where(query, field(as(^join_binding), ^field_name) |> is_nil() == false)
+  end
+
+  defp filter_by_operation({query, join_binding}, field_name, :neq, value) do
+    Ecto.Query.where(query, field(as(^join_binding), ^field_name) != ^value)
+  end
+
+  defp filter_by_operation({query, join_binding}, field_name, :eq, nil) do
+    Ecto.Query.where(query, field(as(^join_binding), ^field_name) |> is_nil())
   end
 
   defp filter_by_operation({query, join_binding}, field_name, :eq, value) do

@@ -13,8 +13,8 @@ defmodule Quarry do
 
   alias Quarry.{From, Filter, Load, Sort}
 
-  @type operation :: :eq | :lt | :gt | :lte | :gte | :starts_with | :ends_with
-  @type filter_param :: String.t() | boolean() | Date.t() | DateTime.t() | list(any()) | number()
+  @type operation :: :neq | :eq | :lt | :gt | :lte | :gte | :starts_with | :ends_with
+  @type filter_param :: nil | String.t() | boolean() | Date.t() | DateTime.t() | list(any()) | number()
   @type tuple_filter_param :: {operation(), filter_param()}
   @type filter :: %{optional(atom()) => filter_param() | tuple_filter_param()} | keyword(any())
   @type load :: atom() | [atom() | keyword(load())]
