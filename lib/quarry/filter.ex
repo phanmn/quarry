@@ -28,7 +28,7 @@ defmodule Quarry.Filter do
     fields = state[:schema].__schema__(:fields)
     association = state[:schema].__schema__(:associations)
 
-    if (is_map(value) && field_name in association) || field_name in fields do
+    if (field_name in association and (is_map(value) or Keyword.keyword?(value))) || field_name in fields do
       filter_field(entry, {query, errors}, state)
     else
       {query, [build_error(field_name, state) | errors]}
