@@ -55,10 +55,21 @@ defmodule Quarry.Filter do
     filter(acc, child_filter, state)
   end
 
-  defp filter_field({field_name, values}, {query, errors}, state) when is_list(values) do
-    {query, join_binding} = Join.join_dependencies(query, state[:binding], state[:path])
-    query = Ecto.Query.where(query, field(as(^join_binding), ^field_name) in ^values)
-    {query, errors}
+  defp filter_field({field_name, values}, {query, errors} = acc, state) when is_list(values) do
+    if Keyword.keyword?(values) do
+      child_schema = state[:schema].__schema__(:association, field_name).related
+
+      state =
+        state
+        |> Keyword.put(:schema, child_schema)
+        |> Keyword.update!(:path, &List.insert_at(&1, 0, field_name))
+
+      filter(acc, values, state)
+    else
+      {query, join_binding} = Join.join_dependencies(query, state[:binding], state[:path])
+      query = Ecto.Query.where(query, field(as(^join_binding), ^field_name) in ^values)
+      {query, errors}
+    end
   end
 
   defp filter_field({field_name, value}, acc, state) when not is_tuple(value) do
