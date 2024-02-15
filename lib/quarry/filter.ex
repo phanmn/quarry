@@ -115,6 +115,14 @@ defmodule Quarry.Filter do
     Ecto.Query.where(query, field(as(^join_binding), ^field_name) >= ^value)
   end
 
+  defp filter_by_operation({query, join_binding}, field_name, :contains, value) do
+    Ecto.Query.where(query, fragment("? @> ?", field(as(^join_binding), ^field_name), ^value))
+  end
+
+  defp filter_by_operation({query, join_binding}, field_name, :contained_by, value) do
+    Ecto.Query.where(query, fragment("? <@ ?", field(as(^join_binding), ^field_name), ^value))
+  end
+
   defp filter_by_operation({query, join_binding}, field_name, :starts_with, value) do
     Ecto.Query.where(query, ilike(field(as(^join_binding), ^field_name), ^"#{value}%"))
   end
