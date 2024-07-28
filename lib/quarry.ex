@@ -33,12 +33,14 @@ defmodule Quarry do
     schema = opts |> Keyword.fetch!(:schema)
 
     quote bind_quoted: [schema: schema] do
+      @schema schema
+
       def build!(opts \\ []) do
-        Quarry.build!(schema, opts)
+        Quarry.build!(@schema, opts)
       end
 
       def build(opts \\ []) do
-        Quarry.build(schema, opts)
+        Quarry.build(@schema, opts)
       end
     end
   end
