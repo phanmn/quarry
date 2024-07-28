@@ -29,6 +29,20 @@ defmodule Quarry do
 
   @type error :: %{type: :filter | :load, path: [atom()], message: String.t()}
 
+  defmacro __using__(opts) do
+    schema = opts |> Keyword.fetch!(:schema)
+
+    quote bind_quoted: [schema: schema] do
+      def build!(opts \\ []) do
+        Quarry.build!(schema, opts)
+      end
+
+      def build(opts \\ []) do
+        Quarry.build(schema, opts)
+      end
+    end
+  end
+
   @doc """
   Builds a query for an entity type from parameters
 
