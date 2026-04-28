@@ -35,10 +35,10 @@ defmodule Quarry.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, "~> 3.5"},
+      {:ecto, "~> 3.13"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:version_release, "~> 0.5.3", only: :dev, runtime: false},
-      {:ecto_sql, "~> 3.5", only: [:dev, :test]},
+      {:ecto_sql, "~> 3.13", only: [:dev, :test]},
       {:ecto_sqlite3, "~> 0.7", only: :test},
       {:ex_machina, "~> 2.3", only: [:test]},
       {:excoveralls, "~> 0.10", only: :test}
